@@ -1,0 +1,361 @@
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Vicky | Portfolio</title>
+
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+
+</head>
+
+<body>
+
+    <!-- ================= NAVIGATION BAR ================= -->
+
+    <header>
+
+        <nav class="navbar">
+
+            <div class="logo">
+                VIGNESH.R 
+            </div>
+
+            <ul class="nav-links">
+
+                <li>
+                    <a href="#home">Home</a>
+                </li>
+
+                <li>
+                    <a href="#about">About</a>
+                </li>
+
+                <li>
+                    <a href="#projects">Projects</a>
+                </li>
+
+                <li>
+                    <a href="#education">Education</a>
+                </li>
+
+                <li>
+                    <a href="#skills">Skills</a>
+                </li>
+
+                <li>
+                    <a href="#contact">Contact</a>
+                </li>
+
+                <li>
+                    <a href="{% url 'logout' %}">Logout</a>
+                </li>
+
+            </ul>
+
+        </nav>
+
+    </header>
+
+
+    <!-- ================= HOME SECTION ================= -->
+
+    <section id="home" class="hero">
+
+        <div class="hero-content">
+
+            <p class="welcome">
+                Hello, I'm
+            </p>
+
+            <h1>
+                VIGNESH R
+            </h1>
+
+            <h2>
+                A PASSIONATE PYTHON FULL STACK DEVELOPER
+            </h2>
+
+            <p class="intro">
+
+                I am passionate about Python, Django,
+                I enjoy building projects and
+                learning new technologies.
+
+            </p>
+
+            <div class="hero-buttons">
+
+                <a href="#projects" class="btn">
+                    View My Projects
+                </a>
+
+                <a href="#contact" class="btn secondary-btn">
+                    Contact Me
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= ABOUT SECTION ================= -->
+
+    <section id="about" class="section">
+
+        <h2 class="section-title">
+            About Me
+        </h2>
+
+        <p>
+
+            I am an engineering student interested in software development,
+            
+            I am continuously improving my programming and problem-solving
+            skills by working on practical projects.
+
+        </p>
+
+    </section>
+
+
+    
+    <!-- ================= PROJECTS SECTION ================= -->
+
+<section id="projects" class="section projects-section">
+
+    <h2 class="section-title">
+        My Projects
+    </h2>
+
+    <div class="project-container">
+
+        {% for project in projects %}
+
+        <div class="project-card">
+
+            <h3>
+                {{ project.title }}
+            </h3>
+
+            <p>
+                {{ project.description }}
+            </p>
+
+            <p>
+                <strong>Technologies:</strong>
+                {{ project.technologies }}
+            </p>
+
+            {% if project.github_link %}
+                <a href="{{ project.github_link }}"
+                   target="_blank"
+                   rel="noopener noreferrer">
+                    View on GitHub
+                </a>
+            {% endif %}
+
+        </div>
+
+        {% empty %}
+
+        <div class="project-card">
+
+            <h3>No Projects Yet</h3>
+
+            <p>
+                Projects will be displayed here once they are added
+                through the Django Admin Panel.
+            </p>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+
+    
+
+    <!-- ================= EDUCATION SECTION ================= -->
+
+<section id="education" class="section">
+
+    <h2 class="section-title">
+        Education & Resume
+    </h2>
+
+    <div class="education-card">
+
+        <h3>
+            B.E. Electronics and Communication Engineering
+        </h3>
+
+        <p>
+            SRM Valliammai Engineering College
+        </p>
+
+        <p>
+            Currently pursuing my engineering degree in final year.
+        </p>
+
+        <div class="resume-buttons">
+
+            <a href="{% static 'documents/Vignesh R Resume.pdf' %}"
+               target="_self"
+               class="btn">
+                View Resume
+            </a>
+
+            <a href="{% static 'documents/Vignesh R Resume.pdf' %}"
+               download
+               class="btn secondary-btn">
+                Download Resume
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+    <!-- ================= SKILLS SECTION ================= -->
+
+    <section id="skills" class="section skills-section">
+
+        <h2 class="section-title">
+            My Skills
+        </h2>
+
+        <div class="skills-container">
+
+            <span>Python</span>
+            <span>Django</span>
+            <span>HTML</span>
+            <span>CSS</span>
+            <span>SQL</span>
+            <span>JavaScript</span>
+
+        </div>
+
+    </section>
+
+
+    
+   
+<!-- ================= CONTACT SECTION ================= -->
+
+<section id="contact" class="section contact-section">
+
+    <h2 class="section-title">
+        Contact Me
+    </h2>
+    <h4>
+        phone: 6381888888 <br>
+        email:vigneshvicky24092005@gmail.com
+    </h4>
+    <br>
+    <p>
+        Have a question or want to work together?
+        Send me a message.
+    </p>
+
+    <form method="POST" class="contact-form">
+
+        {% csrf_token %}
+
+        <div class="form-group">
+
+            <label for="name">Name</label>
+
+            <input
+                type="text"
+                id="name"
+                name="name"
+                placeholder="Enter your name"
+                required
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="email">Email</label>
+
+            <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="Enter your email"
+                required
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="subject">Subject</label>
+
+            <input
+                type="text"
+                id="subject"
+                name="subject"
+                placeholder="Enter subject"
+                required
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="message">Message</label>
+
+            <textarea
+                id="message"
+                name="message"
+                rows="6"
+                placeholder="Write your message..."
+                required
+            ></textarea>
+
+        </div>
+
+
+        <button type="submit" class="send-btn">
+            Send Message
+        </button>
+
+    </form>
+
+</section>
+
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        <p>
+            © 2026 Vicky. All Rights Reserved.
+        </p>
+
+    </footer>
+
+
+</body>
+
+</html>
+
