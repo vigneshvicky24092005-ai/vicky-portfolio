@@ -9,45 +9,37 @@ def main(request):
     return render(request, 'main.html')
 
 
+
 def signup(request):
-
     if request.method == 'POST':
-
         username = request.POST['username']
-        email = request.POST['email']
+        email = request.POST['email'].strip()
         password = request.POST['password']
         confirm_password = request.POST['confirm_password']
 
         if password != confirm_password:
-            return render(
-                request,
-                'main.html',
-                {'error': 'Passwords do not match'}
-            )
+            return render(request, 'main.html',
+                          {'error': 'Passwords do not match'})
 
         if User.objects.filter(username=username).exists():
-            return render(
-                request,
-                'main.html',
-                {'error': 'Username already exists'}
-            )
+            return render(request, 'main.html',
+                          {'error': 'Username already exists'})
 
         if User.objects.filter(email=email).exists():
-            return render(
-                request,
-                'main.html',
-                {'error': 'Email already exists'}
-            )
+            return render(request, 'main.html',
+                          {'error': 'Email already exists'})
 
-        User.objects.create_user(
+        user = User.objects.create_user(
             username=username,
             email=email,
             password=password
         )
 
-        return redirect('main')
+        login(request, user)
+        return redirect('home')
 
     return redirect('main')
+
 
 
 def login_user(request):
@@ -87,34 +79,34 @@ def logout_user(request):
     return redirect('main')
 
 
+
+
 @login_required
 def home(request):
-
     projects = Project.objects.all()
 
     if request.method == 'POST':
-
         name = request.POST['name']
         email = request.POST['email']
         subject = request.POST['subject']
         message = request.POST['message']
 
+        ContactMessage.objects.create(
+            name=name,
+            email=email,
+            message=message
+        )
+
         send_mail(
             subject,
-            f"""
-Name: {name}
+            f"""Name: {name}
 Email: {email}
 
 Message:
-{message}
-""",
+{message}""",
             'vigneshvicky24092005@gmail.com',
             ['vigneshvicky24092005@gmail.com'],
             fail_silently=False,
         )
 
-    return render(
-        request,
-        'home.html',
-        {'projects': projects}
-    )
+    return render(request, 'home.html', {'projects': projects})
